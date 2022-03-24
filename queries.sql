@@ -57,7 +57,7 @@ WHERE b.name = 'Pokemon';
 SELECT full_name, a.name FROM owners 
 LEFT JOIN animals AS a ON owners.id = a.owner_id;
 
-SELECT species.name, COUNT(animals.name) FROM animals
+SELECT species.name, COUNT(animals.name) FROM animals //
 INNER JOIN species ON animals.species_id = species.id
 GROUP BY species.id;
 
@@ -70,7 +70,14 @@ SELECT owners.full_name, animals.name, escape_attempts FROM animals
 INNER JOIN owners ON animals.owner_id = owners.id
 WHERE escape_attempts = 0 AND owners.full_name = 'Dean Winchester';
 
-SELECT full_name, COUNT(animals.id) FROM owners
-INNER JOIN animals ON owners.id = animals.owner_id
-GROUP BY owners.id
-ORDER BY COUNT(animals.id) DESC LIMIT 1;
+SELECT full_name, COUNT(animals.id) FROM animals
+INNER JOIN owners ON animals.owner_id = owners.id
+GROUP BY owners.full_name
+HAVING COUNT(animals.id)=(
+  SELECT MAX(mycount)
+  FROM (
+    SELECT owners.full_name, COUNT(animals.name) mycount FROM animals
+    INNER JOIN owners ON animals.owner_id =  owners.id
+    GROUP BY owners.id
+  ) AS foo
+);
