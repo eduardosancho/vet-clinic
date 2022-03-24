@@ -45,3 +45,39 @@ SELECT AVG(weight_kg) FROM animals;
 SELECT neutered, SUM(escape_attempts) FROM animals GROUP BY neutered;
 SELECT species, MAX(weight_kg), MIN(weight_kg) FROM animals GROUP BY species;
 SELECT species, AVG(escape_attempts) FROM animals WHERE date_of_birth >= '1990-01-01' AND date_of_birth < '2000-01-01' GROUP BY species;
+
+SELECT b.full_name AS owner, a.* FROM animals AS a
+INNER JOIN owners AS b ON a.owner_id =  b.id
+WHERE b.full_name = 'Melody Pond';
+
+SELECT a.name, b.name AS type FROM animals AS a
+INNER JOIN species AS b ON a.species_id = b.id
+WHERE b.name = 'Pokemon';
+
+SELECT full_name, a.name FROM owners 
+LEFT JOIN animals AS a ON owners.id = a.owner_id;
+
+SELECT species.name, COUNT(animals.name) FROM animals //
+INNER JOIN species ON animals.species_id = species.id
+GROUP BY species.id;
+
+SELECT owners.full_name, animals.name FROM animals
+INNER JOIN owners ON animals.owner_id = owners.id
+INNER JOIN species ON animals.species_id = species.id
+WHERE owners.full_name = 'Jennifer Orwell' AND species.name = 'Digimon';
+
+SELECT owners.full_name, animals.name, escape_attempts FROM animals
+INNER JOIN owners ON animals.owner_id = owners.id
+WHERE escape_attempts = 0 AND owners.full_name = 'Dean Winchester';
+
+SELECT full_name, COUNT(animals.id) FROM animals
+INNER JOIN owners ON animals.owner_id = owners.id
+GROUP BY owners.full_name
+HAVING COUNT(animals.id)=(
+  SELECT MAX(mycount)
+  FROM (
+    SELECT owners.full_name, COUNT(animals.name) mycount FROM animals
+    INNER JOIN owners ON animals.owner_id =  owners.id
+    GROUP BY owners.id
+  ) AS foo
+);
