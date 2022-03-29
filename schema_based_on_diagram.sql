@@ -33,3 +33,10 @@ CREATE TABLE treatments (
   type varchar(50),
   name varchar(50),
 );
+
+
+CREATE TABLE treatment_histories (
+  medical_histories_id int REFERENCES medical_histories (id) ON UPDATE CASCADE,
+  treatments_id int REFERENCES treatments (id) ON UPDATE CASCADE,
+  PRIMARY KEY (medical_histories_id, treatments_id)
+);
