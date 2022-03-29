@@ -5,6 +5,8 @@
 This project contains the SQL commands to create a table called *animals*, populate it with sample items and filter depending on multiple parameters.
 ___Try it out___
 
+![ER diagram](screenshots/vet_clinic.png)
+
 ## Getting Started
 
 Clone this repository by running: 
