@@ -34,9 +34,18 @@ CREATE TABLE treatments (
   name varchar(50),
 );
 
-
 CREATE TABLE treatment_histories (
   medical_histories_id int REFERENCES medical_histories (id) ON UPDATE CASCADE,
   treatments_id int REFERENCES treatments (id) ON UPDATE CASCADE,
   PRIMARY KEY (medical_histories_id, treatments_id)
 );
+
+CREATE INDEX idx_medical_histories_treatment_histories ON treatment_histories (medical_histories_id); 
+CREATE INDEX idx_treatments_treatment_histories ON treatment_histories (treatments_id);
+
+CREATE INDEX idx_medical_histories_patients ON medical_histories (patient_id);
+
+CREATE INDEX idx_invoices_medical_histories ON invoices (medical_history_id);
+
+CREATE INDEX idx_invoice_items_invoices ON invoice_items (invoice_id);
+CREATE INDEX idx_invoice_items_treaments ON invoice_items (treatment_id);
