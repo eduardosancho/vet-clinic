@@ -12,6 +12,15 @@ CREATE TABLE invoices (
     medical_history_id int REFERENCES medical_histories (id) ON UPDATE CASCADE,
 );
 
+CREATE TABLE invoice_items (
+    id int GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) NOT NULL PRIMARY KEY,
+    unit_price decimal,
+    quantity int,
+    total_price decimal,
+    invoice_id int REFERENCES invoices (id) ON UPDATE CASCADE,
+    treatment_id int REFERENCES treatments (id) ON UPDATE CASCADE,
+);
+
 CREATE TABLE medical_histories (
     id int GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) NOT NULL PRIMARY KEY,
     admitted_at timestamp,
@@ -19,3 +28,8 @@ CREATE TABLE medical_histories (
     patient_id int REFERENCES patients (id) ON UPDATE CASCADE,
 );
 
+CREATE TABLE treatments (
+  id int GENERATED ALWAYS AS IDENTITY (START WITH 1 INCREMENT BY 1) NOT NULL PRIMARY KEY,
+  type varchar(50),
+  name varchar(50),
+);
